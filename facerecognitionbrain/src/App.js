@@ -4,7 +4,9 @@ import Navigation from './Components/Navigation/Navigation';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import Logo from './Components/Logo/Logo';
 import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm';
+import Signin from './Components/Signin/Signin';
 import Rank from './Components/Rank/Rank';
+
 import './App.css';
 
 const app = new Clarifai.App({
@@ -19,6 +21,7 @@ class App extends Component{
       input:'',
       imageURL:'',
       box:{},
+      route:'signin'
     }
   }
 
@@ -45,6 +48,10 @@ class App extends Component{
     this.setState({input:event.target.value});
   }
 
+  onRouteChange=(route)=>{
+    this.setState({route: route});
+  }
+
   onSubmit = ()=>{
     this.setState({imageURL: this.state.input});
     app.models.predict(
@@ -57,12 +64,16 @@ class App extends Component{
 
     return(
       <div>
-        <Navigation/>
+        <Navigation onRouteChange={this.onRouteChange}/>
+        {this.state.route=== 'signin' 
+        ?<Signin onRouteChange={this.onRouteChange}/>
+        : <div> <Logo />
         <Rank/>
-        <Logo />
         <ImageLinkForm onInputChange={this.onInputChange}
          onSubmit={this.onSubmit}/>
          <FaceRecognition box={this.state.box} imageURL={this.state.imageURL}/>
+         </div>
+    }
       </div>
     )
   }
