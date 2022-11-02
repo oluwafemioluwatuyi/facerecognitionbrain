@@ -5,6 +5,7 @@ import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import Logo from './Components/Logo/Logo';
 import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm';
 import Signin from './Components/Signin/Signin';
+import Register from './Components/Register/Register';
 import Rank from './Components/Rank/Rank';
 
 import './App.css';
@@ -21,7 +22,8 @@ class App extends Component{
       input:'',
       imageURL:'',
       box:{},
-      route:'signin'
+      route:'signin',
+      isSignedIn: false,
     }
   }
 
@@ -49,6 +51,11 @@ class App extends Component{
   }
 
   onRouteChange=(route)=>{
+    if(route==='signout'){
+      this.setState({isSignedIn:false})
+    }else if(route==='home'){
+      this.setState({isSignedIn:true})
+    }
     this.setState({route: route});
   }
 
@@ -61,19 +68,35 @@ class App extends Component{
        .catch(err => console.log(err));
   }
   render(){
+    const {isSignedIn, route, imageURL, box} = this.state; 
 
     return(
       <div>
-        <Navigation onRouteChange={this.onRouteChange}/>
-        {this.state.route=== 'signin' 
-        ?<Signin onRouteChange={this.onRouteChange}/>
-        : <div> <Logo />
-        <Rank/>
-        <ImageLinkForm onInputChange={this.onInputChange}
-         onSubmit={this.onSubmit}/>
-         <FaceRecognition box={this.state.box} imageURL={this.state.imageURL}/>
-         </div>
-    }
+
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+        {route === 'home'
+
+        ? <div>
+
+              <Rank/>
+              <ImageLinkForm onInputChange={this.onInputChange}
+                onSubmit={this.onSubmit}/>
+              <FaceRecognition box={box} imageURL={imageURL}/>
+
+           </div> 
+
+           :(
+            route === 'signin'
+            ? <Signin onRouteChange={this.onRouteChange}/>
+            : <Register onRouteChange={this.onRouteChange}/> 
+           )
+           
+           
+         
+
+        }
+       
+      
       </div>
     )
   }
