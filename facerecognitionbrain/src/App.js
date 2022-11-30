@@ -24,8 +24,26 @@ class App extends Component{
       box:{},
       route:'signin',
       isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined : ''
+      }
     }
   }
+
+  loadUser = (data) => {
+    this.setState({user:{
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined : data.joined 
+    }})
+  }
+
 
   calculateFaceLocation =(data)=>{
     const clarifaiFace =data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -40,6 +58,8 @@ class App extends Component{
     }
 
   }
+
+
 
   dispalyFaceBox = (box)=>{
     console.log(box);
@@ -88,7 +108,7 @@ class App extends Component{
            :(
             route === 'signin'
             ? <Signin onRouteChange={this.onRouteChange}/>
-            : <Register onRouteChange={this.onRouteChange}/> 
+            : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> 
            )
            
            
