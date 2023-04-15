@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai';
+import Clarifai from 'clarifai'; 
 import Navigation from './Components/Navigation/Navigation';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import Logo from './Components/Logo/Logo';
@@ -11,7 +12,7 @@ import Rank from './Components/Rank/Rank';
 import './App.css';
 
 const app = new Clarifai.App({
-  apiKey: '9fe5e57122de4c099b7c071e691e5771'
+  apiKey: 'b5f14b5c4bd6411fb439507cef24cd5e'
 });
 
 
@@ -81,8 +82,10 @@ class App extends Component{
 
   onSubmit = ()=>{
     this.setState({imageURL: this.state.input});
-    app.models.predict(
-      Clarifai.FACE_DETECT_MODEL, 
+    app.models
+    .predict(
+      'face-detection',
+      // Clarifai.FACE_DETECT_MODEL, 
        this.state.input)
        .then(response =>this.dispalyFaceBox(this.calculateFaceLocation(response)))
        .catch(err => console.log(err));
@@ -114,6 +117,7 @@ class App extends Component{
            
          
 
+           
         }
        
       
@@ -125,3 +129,5 @@ class App extends Component{
 //   
 
 export default App;
+
+
